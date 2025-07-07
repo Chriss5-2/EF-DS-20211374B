@@ -11,7 +11,8 @@ jobs:
       run: |
         docker --version
         echo "Docker verificado"
-        
+        kompose convert -f docker-compose.yml
+
     - name: Start minikube
       run: |
         minikube start --driver=docker
@@ -51,7 +52,6 @@ jobs:
 
     - name: Ejecutando docker compose
       run: |
-        kompose convert -f docker-compose.yml
         kubectl apply -f .
         echo "Docker Compose ejecutado"
         echo "Servicios levantados correctamnete"
