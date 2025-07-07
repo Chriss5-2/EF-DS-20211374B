@@ -28,11 +28,13 @@ jobs:
       run: |
         cd monorepo/modules/terraform/network_module
         terraform init
-        terraform plan -out=tfplan
+        terraform validate
+        terraform plan -out=plan.out
+        terraform show -json plan.out > plan.out.json
+        terraform-compliance -f compliance -p plan.out.json
 
     - name: Inicializando la sub-red-2
       run: |
         cd monorepo/modules/terraform/network-2_module
         terraform init
         terraform plan -out=tfplan
-        terraform-compliance -p tfplan -f ../terraform-compliance/features
