@@ -1,0 +1,14 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    name: build example and deploy to minikube
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Start minikube
+      run: |
+        minikube start --driver=docker
+        minikube addons enable ingress
+        echo "Minikube iniciado"
