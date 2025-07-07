@@ -3,12 +3,25 @@ on: [push, pull_request]
 jobs:
   job1:
     runs-on: ubuntu-latest
-    name: build example and deploy to minikube
+    name: Pipeline base
     steps:
     - uses: actions/checkout@v4
 
     - name: Start minikube
       run: |
         minikube start --driver=docker
-        minikube addons enable ingress
+        eval "$(minikube -p minikube docker-env --shell bash)"
         echo "Minikube iniciado"
+
+    - name: Instalando Terraform
+      run: |
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+        sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        sudo apt-get update && sudo apt-get install terraform
+
+    - name: Inicializando la sub-red-1
+      run: |
+        cd monorepo/modules/terraform/network_module
+        terraform init
+        terraform apply -auto-approve
+
