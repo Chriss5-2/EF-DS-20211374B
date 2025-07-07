@@ -1,0 +1,44 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    name: Pipeline base
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Start minikube
+      run: |
+        minikube start --driver=docker
+        eval "$(minikube -p minikube docker-env --shell bash)"
+        echo "Minikube iniciado"
+
+    - name: Instalando Terraform
+      run: |
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+        sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        sudo apt-get update && sudo apt-get install terraform
+
+    - name: Instalando tflint
+      run: |
+        curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+        echo "tflint instalado"
+        
+    - name: Instalando terraform-compliance
+      run: |
+        pip install terraform-compliance
+        echo "terraform-compliance instalado"
+
+    - name: Inicializando la sub-red-1
+      run: |
+        cd monorepo/modules/terraform/network_module
+        terraform init
+        terraform validate
+        terraform plan -out=plan.out
+        terraform show -json plan.out > plan.out.json
+
+    - name: Inicializando la sub-red-2
+      run: |
+        cd monorepo/modules/terraform/network-2_module
+        terraform init
+        terraform plan -out=tfplan
