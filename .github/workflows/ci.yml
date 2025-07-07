@@ -19,9 +19,8 @@ jobs:
 
     - name: Start minikube
       run: |
-        minikube start
-        eval "$(minikube docker-env)"
-        kubectl apply -f k8s/.
+        minikube start --driver=docker
+        eval "$(minikube -p minikube docker-env --shell bash)"
         echo "Minikube iniciado"
 
     - name: Instalando Terraform
@@ -57,5 +56,7 @@ jobs:
 
     - name: Ejecutando docker compose
       run: |
-        echo "Docker Compose ejecutado"
-        echo "Servicios levantados correctamnete"
+      docker build -t docker-compose-service-user ./service-user
+      docker build -t docker-compose-service-product ./service-product
+      echo "Docker Compose ejecutado"
+      echo "Servicios levantados correctamnete"
