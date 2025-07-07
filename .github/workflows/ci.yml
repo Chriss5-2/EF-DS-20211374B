@@ -44,14 +44,16 @@ jobs:
         cd monorepo/modules/terraform/network_module
         terraform init
         terraform validate
-        terraform plan -out=plan.out
-        terraform show -json plan.out > plan.out.json
+        terraform plan
+        terraform apply -auto-approve
+        
 
     - name: Inicializando la sub-red-2
       run: |
         cd monorepo/modules/terraform/network-2_module
         terraform init
-        terraform plan -out=tfplan
+        terraform plan
+        terraform apply -auto-approve
 
 
     - name: Ejecutando docker compose
@@ -71,3 +73,8 @@ jobs:
         kubectl get pods
         kubectl get services
         echo "Despliegue verificado"  
+
+    - name: Usando tflint
+      run: |
+        tflint --init
+        tflint
