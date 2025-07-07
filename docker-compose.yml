@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  user:
+    build: ./service-user
+    ports:
+      - "8000:8000"
+    networks:
+      - default
+    volumes:
+      - ./data/user:/data
+  
+  product:
+    build: ./service-product
+    ports:
+      - "8001:8001"
+    networks:
+      - default
+    volumes:
+      - ./data/product:/data
+
+networks:
+  default:
+    driver: bridge

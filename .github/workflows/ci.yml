@@ -42,3 +42,10 @@ jobs:
         cd monorepo/modules/terraform/network-2_module
         terraform init
         terraform plan -out=tfplan
+
+
+    - name: Ejecutando docker compose
+      run: |
+        docker-compose up -d --build
+        echo "Docker Compose ejecutado"
+        echo "Servicios levantados correctamnete"
