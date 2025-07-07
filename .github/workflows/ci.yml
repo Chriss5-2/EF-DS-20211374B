@@ -46,6 +46,7 @@ jobs:
 
     - name: Ejecutando docker compose
       run: |
-        docker-compose up -d --build
+        kompose convert -f docker-compose.yml
+        kubectl apply -f .
         echo "Docker Compose ejecutado"
         echo "Servicios levantados correctamnete"
