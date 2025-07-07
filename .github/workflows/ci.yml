@@ -56,7 +56,7 @@ jobs:
 
     - name: Ejecutando docker compose
       run: |
-      docker build -t docker-compose-service-user ./service-user
-      docker build -t docker-compose-service-product ./service-product
-      echo "Docker Compose ejecutado"
-      echo "Servicios levantados correctamnete"
+        docker build -t docker-compose-service-user ./service-user
+        docker build -t docker-compose-service-product ./service-product
+        echo "Docker Compose ejecutado"
+        echo "Servicios levantados correctamnete"
