@@ -1,4 +1,4 @@
-resource "null_resource" "network-1" {
+resource "null_resource" "network-2" {
   provisioner "local-exec" {
     command = "echo 'Creando sub-network ${var.name} con puerto ${var.port}'"
   }
