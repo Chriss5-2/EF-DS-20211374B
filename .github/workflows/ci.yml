@@ -35,4 +35,4 @@ jobs:
         cd monorepo/modules/terraform/network-2_module
         terraform init
         terraform plan -out=tfplan
-        terraform-compliance -p tfplan
+        terraform-compliance -p tfplan -f ../terraform-compliance/features
