@@ -7,7 +7,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Start minikube
+    - name: Verificar Docker
+      run: |
+        docker --version
+        echo "Docker verificado"
+        echo "Instalando kompose"
+        curl -L https://github.com/kubernetes/kompose/releases/download/v1.36.0/kompose-linux-amd64 -o kompose
+        chmod +x kompose
+        sudo mv kompose /usr/local/bin/kompose
+        kompose convert -f docker-compose.yml
+
+    - name: Iniciar minikube
       run: |
         minikube start --driver=docker
         eval "$(minikube -p minikube docker-env --shell bash)"
@@ -34,11 +44,37 @@ jobs:
         cd monorepo/modules/terraform/network_module
         terraform init
         terraform validate
-        terraform plan -out=plan.out
-        terraform show -json plan.out > plan.out.json
+        terraform plan
+        terraform apply -auto-approve
+        
 
     - name: Inicializando la sub-red-2
       run: |
         cd monorepo/modules/terraform/network-2_module
         terraform init
-        terraform plan -out=tfplan
+        terraform plan
+        terraform apply -auto-approve
+
+
+    - name: Ejecutando docker compose
+      run: |
+        docker build -t docker-compose-service-user ./service-user
+        docker build -t docker-compose-service-product ./service-product
+        echo "Docker Compose ejecutado"
+        echo "Servicios levantados correctamnete"
+
+    - name: Desplegando kubernetes
+      run: |
+        kubectl apply -f k8s/user-deployment.yaml
+        kubectl apply -f k8s/product-deployment.yaml
+
+    - name: Verificar despliegue
+      run: |
+        kubectl get pods
+        kubectl get services
+        echo "Despliegue verificado"  
+
+    - name: Usando tflint
+      run: |
+        tflint --init
+        tflint
