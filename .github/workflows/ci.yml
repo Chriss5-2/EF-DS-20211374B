@@ -28,10 +28,11 @@ jobs:
       run: |
         cd monorepo/modules/terraform/network_module
         terraform init
-        terraform apply -auto-approve
+        terraform plan -out=tfplan
 
     - name: Inicializando la sub-red-2
       run: |
         cd monorepo/modules/terraform/network-2_module
         terraform init
-        terraform apply -auto-approve
+        terraform plan -out=tfplan
+        terraform-compliance -p tfplan
