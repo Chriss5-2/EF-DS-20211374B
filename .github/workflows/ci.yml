@@ -19,6 +19,11 @@ jobs:
         sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
         sudo apt-get update && sudo apt-get install terraform
 
+    - name: Instalando tflint
+      run: |
+        curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+        echo "tflint instalado"
+        
     - name: Instalando terraform-compliance
       run: |
         pip install terraform-compliance
@@ -31,7 +36,7 @@ jobs:
         terraform validate
         terraform plan -out=plan.out
         terraform show -json plan.out > plan.out.json
-        terraform-compliance -p plan.out.json
+        terraform-compliance -p plan.out.json --features/-f
 
     - name: Inicializando la sub-red-2
       run: |
