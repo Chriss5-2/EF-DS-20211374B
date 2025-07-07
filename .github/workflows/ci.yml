@@ -19,9 +19,19 @@ jobs:
         sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
         sudo apt-get update && sudo apt-get install terraform
 
+    - name: Instalando terraform-compliance
+      run: |
+        pip install terraform-compliance
+        echo "terraform-compliance instalado"
+
     - name: Inicializando la sub-red-1
       run: |
         cd monorepo/modules/terraform/network_module
         terraform init
         terraform apply -auto-approve
 
+    - name: Inicializando la sub-red-2
+      run: |
+        cd monorepo/modules/terraform/network-2_module
+        terraform init
+        terraform apply -auto-approve
