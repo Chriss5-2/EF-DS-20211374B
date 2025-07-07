@@ -19,7 +19,7 @@ jobs:
 
     - name: Start minikube
       run: |
-        minikube start --driver=docker
+        minikube start
         eval "$(minikube docker-env)"
         echo "Minikube iniciado"
 
