@@ -60,3 +60,14 @@ jobs:
         docker build -t docker-compose-service-product ./service-product
         echo "Docker Compose ejecutado"
         echo "Servicios levantados correctamnete"
+
+    - name: Desplegando kubernetes
+      run: |
+        kubectl apply -f k8s/user-deployment.yaml
+        kubectl apply -f k8s/product-deployment.yaml
+
+    - name: Verificar despliegue
+      run: |
+        kubectl get pods
+        kubectl get services
+        echo "Despliegue verificado"  
