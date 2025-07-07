@@ -31,7 +31,7 @@ jobs:
         terraform validate
         terraform plan -out=plan.out
         terraform show -json plan.out > plan.out.json
-        terraform-compliance -f compliance -p plan.out.json
+        terraform-compliance -p plan.out.json
 
     - name: Inicializando la sub-red-2
       run: |
